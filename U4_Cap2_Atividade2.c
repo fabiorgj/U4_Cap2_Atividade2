@@ -34,6 +34,12 @@ void ligar_LED_verde() {
     gpio_put(LED_RED_PIN, 0);   // Desligar o LED vermelho
 }
 
+// Função 3: Ligar LED vermelho (GPIO 13) e desligar as demais GPIOs
+void ligar_LED_vermelho() {
+    gpio_put(LED_RED_PIN, 1);   
+    gpio_put(LED_GREEN_PIN, 0); 
+    gpio_put(LED_BLUE_PIN, 0);  
+}
 
 // Função 7: função que habilita o modo de gravação via USB e reiniciar o sistema
 void reboot_system() {
@@ -62,6 +68,10 @@ int main() {
         if (caractere_comando == '1') {
             ligar_LED_verde();  // Chamando a funçã para ligar o LED verde
             printf("LED verde ligado!\n");
+        } 
+        else if (caractere_comando == '3') {
+            ligar_LED_vermelho();  
+            printf("LED vermelho ligado!\n");
         } 
         else if (caractere_comando == '7') {
             reboot_system();  // Chamando a função para reiniciar o sistema
