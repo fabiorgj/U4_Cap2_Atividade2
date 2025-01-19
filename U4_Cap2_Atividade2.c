@@ -42,6 +42,12 @@ void reboot_system() {
     reset_usb_boot(0, 0);  // Reiniciando o sistema em modo de bootloader USB
 }
 
+// Função que liga LED azul (GPIO 12) e desliga os demais
+void ligar_LED_azul() {
+    gpio_put(LED_BLUE_PIN, 1); 
+    gpio_put(LED_GREEN_PIN, 0);  
+    gpio_put(LED_RED_PIN, 0);   
+}
 
 int main() {
     // Set up our UART
