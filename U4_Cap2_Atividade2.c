@@ -1,40 +1,72 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
+#include "hardware/reset.h"
 
 // UART defines
-// By default the stdout UART is `uart0`, so we will use the second one
 #define UART_ID uart1
 #define BAUD_RATE 115200
-
-// Use pins 4 and 5 for UART1
-// Pins can be changed, see the GPIO function select table in the datasheet for information on GPIO assignments
 #define UART_TX_PIN 4
 #define UART_RX_PIN 5
 
+// GPIOs para LEDs e buzzer
+#define LED_GREEN_PIN 11
+#define LED_BLUE_PIN 12
+#define LED_RED_PIN 13
+
+// Função para configurar os pinos
+void gpio_setup() {
+    gpio_init(LED_GREEN_PIN);
+    gpio_set_dir(LED_GREEN_PIN, GPIO_OUT);
+
+    gpio_init(LED_BLUE_PIN);
+    gpio_set_dir(LED_BLUE_PIN, GPIO_OUT);
+
+    gpio_init(LED_RED_PIN);
+    gpio_set_dir(LED_RED_PIN, GPIO_OUT);
+
+}
+
+// Função 1: Ligar LED verde (GPIO 11) e desligar as demais GPIOs
+void ligar_LED_verde() {
+    gpio_put(LED_GREEN_PIN, 1); // Acender o LED verde
+    gpio_put(LED_BLUE_PIN, 0);  // Desligar o LED azul
+    gpio_put(LED_RED_PIN, 0);   // Desligar o LED vermelho
+}
 
 
-int main()
-{
-    stdio_init_all();
+// Função 7: função que habilita o modo de gravação via USB e reiniciar o sistema
+void reboot_system() {
+    printf("Habilitando modo de gravação via USB...\n");
+    sleep_ms(1000); // pequeno intervalo para exibir a mensagem antes de reiniciar
+    reset_usb_boot(0, 0);  // Reiniciando o sistema em modo de bootloader USB
+}
 
+
+int main() {
     // Set up our UART
     uart_init(UART_ID, BAUD_RATE);
     // Set the TX and RX pins by using the function select on the GPIO
     // Set datasheet for more information on function select
     gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
     gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
-    
-    // Use some the various UART functions to send out data
-    // In a default system, printf will also output via the default UART
-    
     // Send out a string, with CR/LF conversions
     uart_puts(UART_ID, " Hello, UART!\n");
-    
-    // For more examples of UART use see https://github.com/raspberrypi/pico-examples/tree/master/uart
+    // Configuração dos pinos
+    gpio_setup();
 
     while (true) {
-        printf("Hello, world!\n");
-        sleep_ms(1000);
+        char caractere_comando = uart_getc(UART_ID); // Recebe um caractere via UART
+
+        // Ação baseada no caractere recebido
+        if (caractere_comando == '1') {
+            ligar_LED_verde();  // Chamando a funçã para ligar o LED verde
+            printf("LED verde ligado!\n");
+        } 
+        else if (caractere_comando == '7') {
+            reboot_system();  // Chamando a função para reiniciar o sistema
+        }
+
+        sleep_ms(100);  // pequena pausa de 100ms para o loop
     }
 }
