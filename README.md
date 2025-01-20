@@ -7,4 +7,4 @@ README
 # Função 7: Reiniciar o Sistema no Modo Bootloader
 - Comando UART: '7'
 - Descrição:
-  Quando o caractere '7' é enviado via UART, o sistema reinicia e entra automaticamente no modo de gravação USB (bootloader), permitindo que novos firmwares sejam carregados.
+  Quando o caractere '7' é enviado via UART, o sistema reinicia permitindo uma reconfiguração do microcontrolador no modo de bootloader USB.

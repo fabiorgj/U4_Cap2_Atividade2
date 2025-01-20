@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
-#include "hardware/reset.h"
 
 // UART defines
 #define UART_ID uart1
@@ -35,11 +34,11 @@ void ligar_LED_verde() {
 }
 
 
-// Função 7: função que habilita o modo de gravação via USB e reiniciar o sistema
+// Função 7: função que reinicia o sistema
 void reboot_system() {
-    printf("Habilitando modo de gravação via USB...\n");
-    sleep_ms(1000); // pequeno intervalo para exibir a mensagem antes de reiniciar
-    reset_usb_boot(0, 0);  // Reiniciando o sistema em modo de bootloader USB
+    printf("Reiniciando o sistema...\n");
+    sleep_ms(1000); // pequena pausa para exibir mensagem antes de reiniciar
+    watchdog_reboot(0, 0, 0);  // Reiniciando o sistema
 }
 
 
