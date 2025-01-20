@@ -46,7 +46,11 @@ pico_enable_stdio_usb(U4_Cap2_Atividade2 1)
 
 # Add the standard library to the build
 target_link_libraries(U4_Cap2_Atividade2
-        pico_stdlib)
+        pico_stdlib       # Biblioteca padrão
+        hardware_pwm      # Controle de PWM
+        hardware_clocks   # Controle de clocks
+        hardware_timer)
+
 
 # Add the standard include files to the build
 target_include_directories(U4_Cap2_Atividade2 PRIVATE
@@ -55,7 +59,6 @@ target_include_directories(U4_Cap2_Atividade2 PRIVATE
 
 # Add any user requested libraries
 target_link_libraries(U4_Cap2_Atividade2 
-        
         )
 
 pico_add_extra_outputs(U4_Cap2_Atividade2)
